@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="tttss" href="tttss.css" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1{
+            text-align: center;
+            color: green;
+        }
+        body{
+            background-color: black;
+        }
+        table, td {
+            border-color: #282828;
+            border: 1px;
+            color: #282828;
+            text-align: center;
+            border-style: solid;
+            border-radius: 0%;
+            border-collapse: collapse;
+        }
+        button {
+            height: 80px;
+            width: 80px;
+            font-size: large;
+            cursor: pointer;
+            color:white;
+            background-color: black;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: #282828;
+        }
+        footer {
+            color: white;
+            text-align: center;
+            bottom: 0px;
+            padding: 30px 0;
+        }
+    </style>
+</head>
+<body>
+<br>
+    <h1>Tic Tac Toe!</h1>
+    <br><br><br><br>
+    <table align="center">
+        <tr>
+            <td><button id="1" onclick="clicked(this)">1</button></td>
+            <td><button id="2" onclick="clicked(this)">2</button></td>
+            <td><button id="3" onclick="clicked(this)">3</button></td>
+        </tr>
+        <tr>
+            <td><button id="4" onclick="clicked(this)">4</button></td>
+            <td><button id="5" onclick="clicked(this)">5</button></td>
+            <td><button id="6" onclick="clicked(this)">6</button></td>
+        </tr>
+        <tr>
+            <td><button id="7" onclick="clicked(this)" onhover="preclicked">7</button></td>
+            <td><button id="8" onclick="clicked(this)">8</button></td>
+            <td><button id="9" onclick="clicked(this)">9</button></td>
+        </tr>
+    </table>
+    <br><br><br>
+    <div align="center">
+        <h1 id="sub">Player 1 Start</h1>
+    </div>
+    <footer>
+        This game was designed by <a href="https://github.com/Ahmad-RJ">Ahmad Raza</a>.
+        <br> You can contact me at <a href="mailto:ahmadrj1771@gmail.com">ahmadrj1771@gmail.com</a>
+    </footer>
+    <script>
+        let curturn = 1;
+        function clicked(button) {
+            if (button.innerText === "1" || button.innerText === "2" || button.innerText === "3" ||
+                button.innerText === "4" || button.innerText === "5" || button.innerText === "6" ||
+                button.innerText === "7" || button.innerText === "8" || button.innerText === "9"){
+                if (curturn === 1){
+                    button.style.backgroundColor = 'blue';
+                    button.innerText = "X"
+                    button.style.color = 'black';
+                }
+                else if (curturn === 2){
+                    button.style.backgroundColor = 'red';
+                    button.innerText = "O"
+                    button.style.color = 'black';
+                }
+            }
+            if (checkwin()) {
+                if (curturn === 1){
+                    sub.style.color = 'blue';
+                    sub.innerText = `Player ${curturn} Wins!`;
+                }
+                else {
+                    sub.style.color = 'red';
+                    sub.innerText = `Player ${curturn} Wins!`;
+                }
+                //alert(`Player ${curturn} Wins!`);
+                setTimeout(resetgame, 4000);
+            }
+            else if (checkDraw()) {
+                sub.innerText = `Its a draw!`;
+                //alert("It's a draw!");
+                setTimeout(resetgame, 4000);
+            } 
+            else {
+                subclick();
+            }
+        }
+        function subclick() {
+            if (curturn === 1){
+                curturn = 2;
+                sub.innerText = `Player ${curturn}'s Turn`;
+            }
+            else {
+                curturn = 1;
+                sub.innerText = `Player ${curturn}'s Turn`;
+            }
+        }
+        function checkwin(){
+            const b1 = document.getElementById('1');
+            const b2 = document.getElementById('2');
+            const b3 = document.getElementById('3');
+            const b4 = document.getElementById('4');
+            const b5 = document.getElementById('5');
+            const b6 = document.getElementById('6');
+            const b7 = document.getElementById('7');
+            const b8 = document.getElementById('8');
+            const b9 = document.getElementById('9');
+
+            if ((b1.innerText === b2.innerText && b2.innerText === b3.innerText && b1.innerText !== "1" && b2.innerText !== "2" && b3.innerText !== "3") ||
+                (b4.innerText === b5.innerText && b5.innerText === b6.innerText && b4.innerText !== "4" && b5.innerText !== "5" && b6.innerText !== "6") ||
+                (b7.innerText === b8.innerText && b8.innerText === b9.innerText && b7.innerText !== "7" && b8.innerText !== "8" && b9.innerText !== "9")) {
+                return true;
+            }
+            // Check columns
+            if ((b1.innerText === b4.innerText && b4.innerText === b7.innerText && b1.innerText !== "1" && b4.innerText !== "4" && b7.innerText !== "7") ||
+                (b2.innerText === b5.innerText && b5.innerText === b8.innerText && b2.innerText !== "2" && b5.innerText !== "5" && b8.innerText !== "8") ||
+                (b3.innerText === b6.innerText && b6.innerText === b9.innerText && b3.innerText !== "3" && b6.innerText !== "6" && b9.innerText !== "9")) {
+                return true;
+            }
+            // Check diagonals
+            if ((b1.innerText === b5.innerText && b5.innerText === b9.innerText && b1.innerText !== "1" && b5.innerText !== "5" && b9.innerText !== "9") ||
+                (b3.innerText === b5.innerText && b5.innerText === b7.innerText && b3.innerText !== "3" && b5.innerText !== "5" && b7.innerText !== "7")) {
+                return true;
+            }
+            return false;
+        }
+        function checkDraw(){
+            for (let i = 1; i <= 9; i++) {
+                const button = document.getElementById(i.toString());
+                if (button.innerText === i.toString()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        function resetgame(){
+            for (let i = 1; i <= 9; i++) {
+                const button = document.getElementById(i.toString());
+                button.style.backgroundColor = '';
+                button.style.color = 'white';
+                button.innerText = i.toString();
+            }
+            sub.style.color = 'green';
+            sub.innerText = `Player ${curturn} Start`
+        }
+    </script>
+</body>
+</html>
